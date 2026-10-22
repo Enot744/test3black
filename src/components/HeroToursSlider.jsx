@@ -16,7 +16,7 @@ export const heroSliderTours = [
     duration: { ru: "7 дней", ua: "7 днів" },
     seats: { ru: "12 мест", ua: "12 місць" },
     priceEUR: 2850,
-    image: "https://images.unsplash.com/photo-1578328819058-b69f3a3b0f6b?auto=format&fit=crop&w=1920&q=85",
+    image: "https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?auto=format&fit=crop&w=1920&q=85",
     tags: [
       { text: { ru: "Флагманское направление", ua: "Флагманський напрямок" }, color: "bg-amber-400 text-slate-950 font-black" }
     ],
@@ -231,7 +231,7 @@ export default function HeroToursSlider({ activeTour, onSelectTour }) {
         <div
           ref={sliderRef}
           onScroll={handleScroll}
-          className="flex items-stretch gap-3 sm:gap-4 overflow-x-auto snap-x snap-mandatory px-4 sm:px-1 py-1 scroll-smooth select-none no-scrollbar -mx-4 sm:mx-0"
+          className="flex items-stretch gap-3 sm:gap-4 overflow-x-auto snap-x snap-mandatory px-4 sm:px-1 pb-6 sm:py-1 scroll-smooth select-none no-scrollbar -mx-4 sm:mx-0"
           style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
         >
           {/* На десктопе карточка предложения идет первой */}

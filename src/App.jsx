@@ -30,14 +30,14 @@ export default function App() {
   const location = useLocation();
 
   return (
-    <div className="flex flex-col min-h-screen bg-ocean-900 text-sand-100 selection:bg-amber-600 selection:text-white">
+    <div className="flex flex-col min-h-screen bg-ocean-900 text-sand-100 selection:bg-amber-600 selection:text-white overflow-x-hidden">
       <ScrollToTop />
       
       {/* Шапка сайта */}
       <Navbar />
 
       {/* Основной контент с плавными переходами страниц */}
-      <main className="flex-grow">
+      <main className="flex-grow overflow-x-hidden">
         <AnimatePresence mode="wait">
           <Routes location={location} key={location.pathname}>
             <Route path="/" element={<Home />} />

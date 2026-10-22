@@ -167,18 +167,18 @@ export default function Home() {
               >
                 <button
                   onClick={() => setHeroTab('group')}
-                  className={`text-center py-2.5 px-4 sm:px-6 rounded-full text-xs sm:text-sm font-bold tracking-wide transition-all shadow-md ${
+                  className={`text-center py-2.5 px-3 sm:px-6 rounded-full text-xs sm:text-sm font-bold tracking-wide transition-all shadow-md truncate ${
                     heroTab === 'group'
                       ? 'bg-white text-slate-950 hover:bg-sand-100'
                       : 'bg-black/40 backdrop-blur-md text-sand-200 border border-white/10 hover:bg-white/10'
                   }`}
                 >
-                  {isUa ? "Групові" : "Групповые"}
+                  {isUa ? "Групові подорожі" : "Групповые путешествия"}
                 </button>
 
                 <button
                   onClick={() => setHeroTab('individual')}
-                  className={`text-center py-2.5 px-4 sm:px-6 rounded-full text-xs sm:text-sm font-bold tracking-wide transition-all ${
+                  className={`text-center py-2.5 px-3 sm:px-6 rounded-full text-xs sm:text-sm font-bold tracking-wide transition-all truncate ${
                     heroTab === 'individual'
                       ? 'bg-white text-slate-950 hover:bg-sand-100 shadow-md'
                       : 'bg-black/40 backdrop-blur-md text-sand-200 border border-white/10 hover:bg-white/10'
