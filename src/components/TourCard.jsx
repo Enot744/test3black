@@ -83,8 +83,8 @@ export default function TourCard({ tour }) {
               {language === 'ua' ? 'Вартість туру' : 'Стоимость тура'}
             </span>
             <div className="flex items-baseline space-x-1">
-              <span className="text-2xl font-serif font-bold text-sand-100">
-                ${tour.priceUSD.toLocaleString()}
+              <span className="text-2xl font-serif font-bold text-amber-400">
+                {tour.priceEUR ? `${tour.priceEUR.toLocaleString()} €` : `${tour.priceUSD.toLocaleString()} €`}
               </span>
               <span className="text-xs text-sand-400">
                 / {tour.durationDays} {language === 'ua' ? 'днів' : 'дней'}

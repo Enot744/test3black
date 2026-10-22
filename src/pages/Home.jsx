@@ -9,6 +9,7 @@ import {
 import { useTours } from '../context/ToursContext';
 import TourCard from '../components/TourCard';
 import HeroToursSlider, { heroSliderTours } from '../components/HeroToursSlider';
+import StackedTours from '../components/StackedTours';
 
 export default function Home() {
   const { tours, language, t, openBookingModal } = useTours();
@@ -127,30 +128,8 @@ export default function Home() {
           <div className="absolute inset-0 bg-radial-gradient from-transparent via-black/20 to-black/60 pointer-events-none" />
         </div>
 
-        {/* ВЕРХНЯЯ ЧАСТЬ HERO (ЗАГОЛОВОК, ТАБЫ И ПЛАВАЮЩИЙ ОТЗЫВ СЕРГЕЯ ТКАЧЕВА) */}
+        {/* ВЕРХНЯЯ ЧАСТЬ HERO (ЗАГОЛОВОК, ТАБЫ И ПЛАВАЮЩИЙ ОТЗЫВ СЕРГЕЯ ТКАЧЕВА НА ДЕСКТОПЕ) */}
         <div className="relative z-10 max-w-7xl mx-auto w-full mb-8">
-          
-          {/* МОБИЛЬНАЯ ПЛАВАЮЩАЯ КАРТОЧКА ТУРА (ТОЧНО КАК НА МОБИЛЬНОМ СКРИНШОТЕ) */}
-          <div className="flex md:hidden justify-end mb-4">
-            <motion.div
-              key={activeHeroTour.id}
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="bg-black/60 backdrop-blur-xl border border-white/15 rounded-2xl p-3.5 max-w-[240px] text-left shadow-2xl"
-            >
-              <h4 className="font-bold text-sm text-white leading-tight mb-1">
-                {activeHeroTour.title[language]}
-              </h4>
-              <p className="text-[11px] text-sand-300 font-medium mb-1.5 leading-snug">
-                {activeHeroTour.dates[language]} <br />• {activeHeroTour.duration[language]}
-              </p>
-              <div className="inline-flex items-center space-x-1 bg-white/10 px-2 py-0.5 rounded-full text-[10px] font-bold text-sand-100">
-                <Users className="w-2.5 h-2.5 text-amber-400" />
-                <span>{activeHeroTour.seats[language]}</span>
-              </div>
-            </motion.div>
-          </div>
-
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
             
             {/* ЛЕВАЯ КОЛОНКА: ГЛАВНЫЙ ТИТУЛ И ТАБЫ */}
@@ -160,7 +139,7 @@ export default function Home() {
                 initial={{ opacity: 0, y: 25 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.7 }}
-                className="font-serif text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-white leading-[1.08] mb-6 drop-shadow-lg"
+                className="font-serif text-[34px] leading-[1.12] sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-white mb-6 drop-shadow-lg"
               >
                 {isUa ? (
                   <>
@@ -179,27 +158,27 @@ export default function Home() {
                 )}
               </motion.h1>
 
-              {/* Интерактивные табы: Групповые / Индивидуальные */}
+              {/* Интерактивные табы: Групповые / Индивидуальные (в 1 ряд на мобилках) */}
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.7, delay: 0.15 }}
-                className="flex items-center space-x-3 mb-4"
+                className="grid grid-cols-2 gap-3 w-full sm:w-auto sm:flex items-center mb-4"
               >
                 <button
                   onClick={() => setHeroTab('group')}
-                  className={`px-5 sm:px-6 py-2.5 rounded-full text-xs sm:text-sm font-bold tracking-wide transition-all shadow-md ${
+                  className={`text-center py-2.5 px-4 sm:px-6 rounded-full text-xs sm:text-sm font-bold tracking-wide transition-all shadow-md ${
                     heroTab === 'group'
                       ? 'bg-white text-slate-950 hover:bg-sand-100'
                       : 'bg-black/40 backdrop-blur-md text-sand-200 border border-white/10 hover:bg-white/10'
                   }`}
                 >
-                  {isUa ? "Групові подорожі" : "Групповые путешествия"}
+                  {isUa ? "Групові" : "Групповые"}
                 </button>
 
                 <button
                   onClick={() => setHeroTab('individual')}
-                  className={`px-5 sm:px-6 py-2.5 rounded-full text-xs sm:text-sm font-bold tracking-wide transition-all ${
+                  className={`text-center py-2.5 px-4 sm:px-6 rounded-full text-xs sm:text-sm font-bold tracking-wide transition-all ${
                     heroTab === 'individual'
                       ? 'bg-white text-slate-950 hover:bg-sand-100 shadow-md'
                       : 'bg-black/40 backdrop-blur-md text-sand-200 border border-white/10 hover:bg-white/10'
@@ -209,7 +188,7 @@ export default function Home() {
                 </button>
               </motion.div>
 
-              {/* Мобильный подзаголовок из скриншота 2 */}
+              {/* Мобильный подзаголовок */}
               <p className="block md:hidden text-sand-300 text-xs sm:text-sm leading-relaxed max-w-md">
                 {isUa 
                   ? "Створюємо подорожі, які стають легендами. Якщо ви можете це уявити — ми можемо це організувати."
@@ -273,7 +252,10 @@ export default function Home() {
         </motion.div>
       </section>
 
-      {/* 2. СЕКЦИЯ: ИЗБРАННЫЕ ЭКСПЕДИЦИИ (ХИТЫ СЕЗОНА) */}
+      {/* 2. ПРЕМИАЛЬНЫЙ БЛОК СКЛАДЫВАЮЩИХСЯ В КОЛОДУ КАРТОЧЕК (APPLE WALLET / STICKY STACK) */}
+      <StackedTours />
+
+      {/* 3. СЕКЦИЯ: ИЗБРАННЫЕ ЭКСПЕДИЦИИ (ХИТЫ СЕЗОНА) */}
       <section className="py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -389,7 +371,7 @@ export default function Home() {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
           {[
             { img: "https://images.unsplash.com/photo-1517411032315-54ef2cb783bb?auto=format&fit=crop&w=800&q=80", label: "Ісландія / Ватнайокутль", offset: false },
-            { img: "https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?auto=format&fit=crop&w=800&q=80", label: "Намібія / Соссусфлей", offset: true },
+            { img: "https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?auto=format&fit=crop&w=800&q=80", label: "Намібія / Соссусфлей", offset: true },
             { img: "https://images.unsplash.com/photo-1503899036084-c55cdd92da26?auto=format&fit=crop&w=800&q=80", label: "Японія / Кіото Момідзі", offset: false },
             { img: "https://images.unsplash.com/photo-1526392060635-9d6019884377?auto=format&fit=crop&w=800&q=80", label: "Перу / Мачу-Пікчу", offset: true },
           ].map((item, i) => (
