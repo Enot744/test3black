@@ -1,31 +1,24 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   ArrowRight, Shield, Award, Users, Compass, 
-  Star, Quote, CheckCircle2, ChevronRight, Sparkles, 
-  X, MessageSquare, Play, Globe, ExternalLink
+  Star, Quote, CheckCircle2, ChevronRight, Sparkles, X 
 } from 'lucide-react';
 import { useTours } from '../context/ToursContext';
 import TourCard from '../components/TourCard';
-import HeroToursSlider, { heroSliderTours } from '../components/HeroToursSlider';
 import StackedTours from '../components/StackedTours';
 
 export default function Home() {
   const { tours, language, t, openBookingModal } = useTours();
   const isUa = language === 'ua';
 
-  // Выбранный тур в слайдере (меняет фоновое фото Hero)
-  const [activeHeroTour, setActiveHeroTour] = useState(heroSliderTours[0]);
-
-  // Таб в Hero: "Групповые" / "Индивидуальные"
-  const [heroTab, setHeroTab] = useState('group');
-
-  // Модалка отзыва Сергея Ткачева (из скриншота)
+  // Модалка отзыва
   const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
 
   // Хитовые туры из каталога
   const featuredTours = tours.slice(0, 3);
+  
 
   // Преимущества клуба
   const features = [
@@ -98,162 +91,102 @@ export default function Home() {
       transition={{ duration: 0.4 }}
       className="relative overflow-hidden bg-ocean-950 text-sand-100"
     >
-      {/* ДЕКОРАТИВНЫЕ СВЕТОВЫЕ ОРЕОЛЫ (ВОЗДУШНОСТЬ И ГЛУБИНА) */}
-      <div className="fixed inset-0 pointer-events-none z-0">
-        <div className="absolute top-20 left-10 w-[500px] h-[500px] bg-amber-500/5 rounded-full blur-[140px]" />
-        <div className="absolute top-[40%] right-10 w-[600px] h-[600px] bg-cyan-500/5 rounded-full blur-[160px]" />
-        <div className="absolute bottom-20 left-1/3 w-[500px] h-[500px] bg-amber-600/5 rounded-full blur-[130px]" />
-      </div>
-
-      {/* 1. HERO СЕКЦИЯ В СТИЛЕ NEVEREND.RU (ПОЛНОСТЬЮ АДАПТИВНАЯ) */}
-      <section className="relative min-h-screen flex flex-col justify-between pt-28 pb-10 sm:pb-12 px-4 sm:px-6 lg:px-8 overflow-hidden z-10">
+      {/* 1. HERO СЕКЦІЯ (АТМОСФЕРНИЙ ПРЕЗЕНТАЦІЙНИЙ ЕКРАН AURA EXPEDITIONS) */}
+      <section className="relative min-h-[92vh] flex items-center justify-center pt-28 pb-16 px-4 sm:px-6 lg:px-8 overflow-hidden z-10">
         
-        {/* КИНЕМАТОГРАФИЧНЫЙ ФОН: ПЛАВНАЯ СМЕНА ФОТО ПРИ НАВЕДЕНИИ НА ТУРЫ */}
-        <div className="absolute inset-0 z-0 overflow-hidden">
-          <AnimatePresence mode="wait">
-            <motion.img
-              key={activeHeroTour.id}
-              src={activeHeroTour.image}
-              alt={activeHeroTour.title[language]}
-              initial={{ opacity: 0, scale: 1.06 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
-              className="w-full h-full object-cover object-center filter brightness-[0.78] contrast-[1.05]"
-            />
-          </AnimatePresence>
-
-          {/* Премиальный многослойный градиент для читаемости текста */}
-          <div className="absolute inset-0 bg-gradient-to-t from-ocean-950 via-ocean-950/40 to-ocean-950/60" />
-          <div className="absolute inset-0 bg-radial-gradient from-transparent via-black/20 to-black/60 pointer-events-none" />
-        </div>
-
-        {/* ВЕРХНЯЯ ЧАСТЬ HERO (ЗАГОЛОВОК, ТАБЫ И ПЛАВАЮЩИЙ ОТЗЫВ СЕРГЕЯ ТКАЧЕВА НА ДЕСКТОПЕ) */}
-        <div className="relative z-10 max-w-7xl mx-auto w-full mb-8">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-            
-            {/* ЛЕВАЯ КОЛОНКА: ГЛАВНЫЙ ТИТУЛ И ТАБЫ */}
-            <div className="lg:col-span-8">
-              {/* Главный заголовок в стиле Neverend */}
-              <motion.h1
-                initial={{ opacity: 0, y: 25 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.7 }}
-                className="font-serif text-[34px] leading-[1.12] sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-white mb-6 drop-shadow-lg"
-              >
-                {isUa ? (
-                  <>
-                    Преміальні подорожі <br />
-                    <span className="italic font-normal text-transparent bg-clip-text bg-gradient-to-r from-sand-100 via-amber-200 to-amber-400">
-                      в оточенні лідерів
-                    </span>
-                  </>
-                ) : (
-                  <>
-                    Премиальные путешествия <br />
-                    <span className="italic font-normal text-transparent bg-clip-text bg-gradient-to-r from-sand-100 via-amber-200 to-amber-400">
-                      в окружении лидеров
-                    </span>
-                  </>
-                )}
-              </motion.h1>
-
-              {/* Интерактивные табы: Групповые / Индивидуальные (в 1 ряд на мобилках) */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.7, delay: 0.15 }}
-                className="grid grid-cols-2 gap-3 w-full sm:w-auto sm:flex items-center mb-4"
-              >
-                <button
-                  onClick={() => setHeroTab('group')}
-                  className={`text-center py-2.5 px-3 sm:px-6 rounded-full text-xs sm:text-sm font-bold tracking-wide transition-all shadow-md truncate ${
-                    heroTab === 'group'
-                      ? 'bg-white text-slate-950 hover:bg-sand-100'
-                      : 'bg-black/40 backdrop-blur-md text-sand-200 border border-white/10 hover:bg-white/10'
-                  }`}
-                >
-                  {isUa ? "Групові подорожі" : "Групповые путешествия"}
-                </button>
-
-                <button
-                  onClick={() => setHeroTab('individual')}
-                  className={`text-center py-2.5 px-3 sm:px-6 rounded-full text-xs sm:text-sm font-bold tracking-wide transition-all truncate ${
-                    heroTab === 'individual'
-                      ? 'bg-white text-slate-950 hover:bg-sand-100 shadow-md'
-                      : 'bg-black/40 backdrop-blur-md text-sand-200 border border-white/10 hover:bg-white/10'
-                  }`}
-                >
-                  {isUa ? "Індивідуальні" : "Индивидуальные"}
-                </button>
-              </motion.div>
-
-              {/* Мобильный подзаголовок */}
-              <p className="block md:hidden text-sand-300 text-xs sm:text-sm leading-relaxed max-w-md">
-                {isUa 
-                  ? "Створюємо подорожі, які стають легендами. Якщо ви можете це уявити — ми можемо це організувати."
-                  : "Создаем путешествия, которые становятся легендами. Если вы можете это представить — мы можем это организовать."}
-              </p>
-            </div>
-
-            {/* ПРАВАЯ КОЛОНКА (ДЕСКТОП): ПЛАВАЮЩИЙ ОТЗЫВ СЕРГЕЯ ТКАЧЕВА */}
-            <div className="hidden lg:block lg:col-span-4">
-              <motion.div
-                initial={{ opacity: 0, x: 30 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.8, delay: 0.2 }}
-                className="bg-black/60 backdrop-blur-2xl rounded-2xl p-5 border border-white/15 text-left shadow-2xl max-w-sm ml-auto relative group hover:border-amber-400/40 transition-colors"
-              >
-                <div className="flex items-center space-x-1 text-amber-400 mb-2.5">
-                  {[1, 2, 3, 4, 5].map((s) => (
-                    <Star key={s} className="w-3.5 h-3.5 fill-amber-400" />
-                  ))}
-                  <span className="text-[10px] font-bold text-sand-400 ml-1.5">5.0</span>
-                </div>
-
-                <h4 className="font-bold text-sm text-white mb-0.5">
-                  {isUa ? "Сергій Ткачов" : "Сергей Ткачев"}
-                </h4>
-                <p className="text-[11px] text-sand-400 mb-3 leading-snug font-medium line-clamp-1">
-                  {isUa 
-                    ? "Власник компаній автозапчастин, сумарний оборот..." 
-                    : "Компании по производству и продаже автозапчастей..."}
-                </p>
-
-                <p className="text-xs text-sand-200 leading-relaxed italic line-clamp-3 mb-3.5">
-                  "{isUa 
-                    ? "Дуже сподобалася організація всіх процесів. Екіпаж корабля неймовірно уважний. Команда працює чітко, оперативно і з душею..." 
-                    : "Очень понравилась организация всех процессов. Экипаж корабля очень услужливый. Команда очень дружелюбная, отработала прекрасно. Четко, оперативно, с душой..."}"
-                </p>
-
-                <button
-                  onClick={() => setIsReviewModalOpen(true)}
-                  className="text-xs font-bold text-sand-100 hover:text-amber-400 uppercase tracking-wider flex items-center space-x-1 transition-colors"
-                >
-                  <span>{isUa ? "ЧИТАТИ ВІДГУК" : "ЧИТАТЬ ОТЗЫВ"}</span>
-                  <ChevronRight className="w-3.5 h-3.5 text-amber-500" />
-                </button>
-              </motion.div>
-            </div>
-          </div>
-        </div>
-
-        {/* НИЖНЯЯ ЧАСТЬ HERO: ГОРИЗОНТАЛЬНЫЙ СЛАЙДЕР ТУРОВ (ТОЧНО КАК НА СКРИНШОТЕ) */}
-        <motion.div
-          initial={{ opacity: 0, y: 35 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.3 }}
-          className="relative z-10 max-w-7xl mx-auto w-full"
-        >
-          <HeroToursSlider 
-            activeTour={activeHeroTour} 
-            onSelectTour={(tour) => setActiveHeroTour(tour)} 
+        {/* Фоновий гірський пейзаж із соснами точно як на скріншоті */}
+        <div className="absolute inset-0 z-0">
+          <img
+            src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=2000&q=85"
+            alt="Aura Expedition Hero"
+            className="w-full h-full object-cover object-center filter brightness-[0.75] contrast-[1.08]"
           />
-        </motion.div>
-      </section>
+          {/* Градієнтні люксові затемнення */}
+          <div className="absolute inset-0 bg-gradient-to-t from-ocean-950 via-ocean-950/50 to-ocean-950/80" />
+          <div className="absolute inset-0 bg-ocean-950/25 backdrop-blur-[0.5px]" />
+        </div>
 
-      {/* 2. ПРЕМИАЛЬНЫЙ БЛОК СКЛАДЫВАЮЩИХСЯ В КОЛОДУ КАРТОЧЕК (APPLE WALLET / STICKY STACK) */}
-      <StackedTours />
+        <div className="relative z-10 max-w-5xl mx-auto text-center w-full">
+          
+          {/* Бейдж */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="inline-flex items-center space-x-2 px-3 sm:px-4 py-1.5 rounded-full bg-black/40 backdrop-blur-md border border-amber-500/30 text-amber-400 text-[10px] sm:text-xs md:text-sm font-semibold uppercase tracking-wider sm:tracking-widest mb-6 shadow-lg max-w-full"
+          >
+            <Sparkles className="w-3.5 h-3.5 text-amber-400 animate-pulse" />
+            <span>{isUa ? "✦ КЛУБ АВТОРСЬКИХ ПОДОРОЖЕЙ 2025/2026" : "✦ КЛУБ АВТОРСКИХ ЭКСПЕДИЦИЙ 2025/2026"}</span>
+          </motion.div>
+
+          {/* Заголовок точно зі скріншота */}
+          <motion.h1
+            initial={{ opacity: 0, y: 25 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.1 }}
+            className="font-serif text-3xl sm:text-5xl md:text-7xl lg:text-8xl font-normal sm:font-medium tracking-tight text-white leading-[1.12] sm:leading-[1.08] mb-6 drop-shadow-md"
+          >
+            {isUa ? (
+              <>
+                Подорожі, які{" "}
+                <span className="italic font-normal text-amber-400 font-serif">
+                  змінюють
+                </span>
+                <br />
+                <span className="italic font-normal text-amber-400 font-serif">
+                  свідомість
+                </span>
+              </>
+            ) : (
+              <>
+                Путешествия, которые{" "}
+                <span className="italic font-normal text-amber-400 font-serif">
+                  меняют
+                </span>
+                <br />
+                <span className="italic font-normal text-amber-400 font-serif">
+                  сознание
+                </span>
+              </>
+            )}
+          </motion.h1>
+
+          {/* Підзаголовок */}
+          <motion.p
+            initial={{ opacity: 0, y: 25 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.2 }}
+            className="text-sand-200 text-base sm:text-lg md:text-xl max-w-3xl mx-auto leading-relaxed mb-10 font-light drop-shadow"
+          >
+            {isUa 
+              ? "Маленькі закриті групи до 8—10 осіб, унікальні локації поза масовим туризмом та супровід світових експертів."
+              : "Маленькие закрытые группы до 8—10 человек, уникальные локации вне массового туризма и сопровождение признанных экспертов."}
+          </motion.p>
+
+          {/* Кнопки дій точно як на скріншоті */}
+          <motion.div
+            initial={{ opacity: 0, y: 25 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7, delay: 0.3 }}
+            className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6"
+          >
+            <Link
+              to="/catalog"
+              className="w-full sm:w-auto inline-flex items-center justify-center px-8 py-4 rounded-full bg-gradient-to-r from-amber-600 via-amber-500 to-orange-600 hover:from-amber-500 hover:to-orange-500 text-slate-950 font-bold text-xs sm:text-sm uppercase tracking-wider shadow-xl hover:shadow-orange-500/25 transition-all duration-300 group"
+            >
+              <span>{isUa ? "ОБРАТИ ЕКСПЕДИЦІЮ" : "ВЫБРАТЬ ЭКСПЕДИЦИЮ"}</span>
+              <ArrowRight className="w-4 h-4 ml-2 transition-transform group-hover:translate-x-1" />
+            </Link>
+
+            <Link
+              to="/about"
+              className="w-full sm:w-auto inline-flex items-center justify-center px-8 py-4 rounded-full bg-black/40 backdrop-blur-md hover:bg-white/10 text-sand-100 font-semibold text-xs sm:text-sm uppercase tracking-wider transition-all duration-300 border border-white/15"
+            >
+              {isUa ? "ФІЛОСОФІЯ КЛУБУ" : "ФИЛОСОФИЯ КЛУБА"}
+            </Link>
+          </motion.div>
+        </div>
+      </section>
 
       {/* 3. СЕКЦИЯ: ИЗБРАННЫЕ ЭКСПЕДИЦИИ (ХИТЫ СЕЗОНА) */}
       <section className="py-24 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
@@ -299,8 +232,11 @@ export default function Home() {
         </div>
       </section>
 
+      {/* 2. ПРЕМИАЛЬНЫЙ БЛОК СКЛАДЫВАЮЩИХСЯ В КОЛОДУ КАРТОЧЕК (APPLE WALLET / STICKY STACK) */}
+      <StackedTours />
+
       {/* 3. СЕКЦИЯ: ПРЕИМУЩЕСТВА КЛУБА (СТАНДАРТЫ AURA) */}
-      <section className="py-24 bg-ocean-900/60 border-y border-white/10 relative overflow-hidden z-10">
+      <section id="standards" className="py-24 bg-ocean-900/60 border-y border-white/10 relative overflow-hidden z-10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 30 }}

@@ -15,7 +15,8 @@ export default function StackedTours() {
   const [activeTab, setActiveTab] = useState('group');
 
   // Активная развернутая карточка в колоде (по умолчанию 3 - предпоследняя или 4, чтобы сверху были видны корешки как на скриншоте)
-  const [activeCardIndex, setActiveCardIndex] = useState(3);
+  // По умолчанию всегда открыта последняя карточка в колоде
+  const [activeCardIndex, setActiveCardIndex] = useState(5);
 
   // Список мировых экспедиций для колоды (строго без РФ!)
   const stackDeckTours = [

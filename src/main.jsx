@@ -5,9 +5,13 @@ import App from './App';
 import { ToursProvider } from './context/ToursContext';
 import './index.css';
 
+const basename = typeof window !== 'undefined' && window.location.pathname.startsWith('/test3black')
+  ? '/test3black'
+  : '/';
+
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <BrowserRouter basename="/test3black">
+    <BrowserRouter basename={basename}>
       <ToursProvider>
         <App />
       </ToursProvider>

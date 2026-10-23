@@ -27,6 +27,7 @@ export default function Navbar() {
     { name: t.nav.home, path: '/' },
     { name: t.nav.catalog, path: '/catalog' },
     { name: t.nav.about, path: '/about' },
+    { name: language === 'ua' ? "Глобус удачі" : "Глобус удачи", path: '/lucky-globe', isHot: true },
   ];
 
   return (
@@ -48,7 +49,7 @@ export default function Navbar() {
                 </div>
               </div>
               <div className="flex flex-col">
-                <span className="font-serif text-2xl font-bold tracking-wider text-sand-100 group-hover:text-amber-500 transition-colors">
+                <span className="font-serif text-xl sm:text-2xl font-bold tracking-wider text-sand-100 group-hover:text-amber-500 transition-colors">
                   AURA
                 </span>
                 <span className="text-[9px] tracking-[0.25em] text-sand-400 uppercase -mt-1 font-sans">
@@ -72,6 +73,11 @@ export default function Navbar() {
                     }`}
                   >
                     {link.name}
+                    {link.isHot && (
+                      <span className="ml-1.5 bg-gradient-to-r from-red-500 to-amber-500 text-white text-[9px] font-black px-1.5 py-0.5 rounded-full leading-none uppercase shadow-sm">
+                        HOT
+                      </span>
+                    )}
                     {isActive && (
                       <motion.div
                         layoutId="navIndicator"
@@ -123,10 +129,10 @@ export default function Navbar() {
 
               <button
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                className="p-2 rounded-lg text-sand-100 hover:bg-ocean-800 focus:outline-none"
+                className="w-11 h-11 rounded-2xl bg-white/10 hover:bg-white/20 active:scale-95 backdrop-blur-md border border-white/15 text-white flex items-center justify-center transition-all shadow-lg focus:outline-none"
                 aria-label="Toggle menu"
               >
-                {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+                {isMobileMenuOpen ? <X className="w-5 h-5 text-amber-400" /> : <Menu className="w-5 h-5 text-white" />}
               </button>
             </div>
           </div>
@@ -150,6 +156,7 @@ export default function Navbar() {
                   <Link
                     key={link.path}
                     to={link.path}
+                    onClick={() => setIsMobileMenuOpen(false)}
                     className={`px-4 py-3 rounded-xl text-base font-medium transition-colors ${
                       isActive
                         ? 'bg-amber-600/15 text-amber-500 border border-amber-600/30'
@@ -157,6 +164,11 @@ export default function Navbar() {
                     }`}
                   >
                     {link.name}
+                    {link.isHot && (
+                      <span className="ml-1.5 bg-gradient-to-r from-red-500 to-amber-500 text-white text-[9px] font-black px-1.5 py-0.5 rounded-full leading-none uppercase shadow-sm">
+                        HOT
+                      </span>
+                    )}
                   </Link>
                 );
               })}

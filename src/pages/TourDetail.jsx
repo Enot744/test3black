@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
@@ -12,6 +12,13 @@ export default function TourDetail() {
   const { tours, language, openBookingModal } = useTours();
 
   const tour = tours.find((t) => t.slug === slug);
+
+  // Гарантированный скролл в самый верх при переходе на тур
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+  }, [slug]);
 
   // Состояние раскрытых дней программы (по умолчанию День 1 открыт)
   const [openDays, setOpenDays] = useState({ 1: true });
